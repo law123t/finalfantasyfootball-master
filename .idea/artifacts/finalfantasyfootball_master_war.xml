@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="finalfantasyfootball-master:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="finalfantasyfootball.war">
+      <element id="artifact" artifact-name="finalfantasyfootball-master:war exploded" />
+    </root>
+  </artifact>
+</component>
