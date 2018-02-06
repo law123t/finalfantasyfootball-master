@@ -7,6 +7,8 @@
 ### Sandbox Draft
 ![Screen Design](images/Screens/SandboxTeamForm.png)</br>
 
+## View my Teams
+![Screen Design](images/Screens/MyTeams.png)</br>
 
 ### Head To Head
 ![Screen Design](images/Screens/HeadToHead.png)</br>
