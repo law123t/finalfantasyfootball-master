@@ -1,12 +1,12 @@
 # FinalFantasyFootball
 
 ## Problem Statement
-*In this project, I plan to address the problem of having the freedom to project and simulate football
+* In this project, I plan to address the problem of having the freedom to project and simulate football
 teams. With this application users will be able to build teams freely and efficiently, without 
 having to do multiple. time consuming drafts just to project season outcomes or draft priority
 
 ## Application Details
-*This application will have 2 main functions; a function that allows free draft called "Sandbox Draft", 
+* This application will have 2 main functions; a function that allows free draft called "Sandbox Draft", 
  and a "Head to Head" that allows for team vs team simulation.
 
 ### Sandbox Draft
@@ -24,7 +24,7 @@ the simulation 16 times, giving only the total season points and amounts of wins
 * Maven
 * Hibernate
 * AWS
-* JQuery
+* JQuery (draggable droppable?)
 * Tomcat & Tomee
 * Java
 * SQL</br>
