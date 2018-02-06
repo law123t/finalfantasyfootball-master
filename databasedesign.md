@@ -11,11 +11,11 @@
 * players will have an enumerated status that can be changed manually or automatically, this will 
 then make teams status as valid or invalid, prompting a change in the team
 
-###User Team table contains these fields
+### User Team table contains these fields
 * 8 Player fields
 * Team name
 
-##Player table contains these fields
+### Player table contains these fields
 * First Name
 * Last Name
 * Player Position
@@ -27,5 +27,5 @@ then make teams status as valid or invalid, prompting a change in the team
 * Interceptions
 * Sacks
 
-##Player Position table contains these fields
+### Player Position table contains these fields
 * Player Position
