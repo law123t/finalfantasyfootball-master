@@ -14,13 +14,13 @@
 
 ### Week 4
 - [X ] Complete database design
-- [ ] Create the database and user table
-- [ ] Create the user entity class and annotate for hibernate
-- [ ] Create user dao
-- [ ] Create the test database
-- [ ] Create user dao unit tests
-- [ ] Weekly journal entry
-- [ ] Set up logging
+- [X ] Create the database and user table
+- [X ] Create the user entity class and annotate for hibernate
+- [X ] Create user dao
+- [X ] Create the test database
+- [ ] Create user dao unit tests - *Moving to Next Week*
+- [X ] Weekly journal entry
+- [X ] Set up logging
 - [ ] Prepare for Week 5 peer design/code review
 
 
@@ -28,9 +28,9 @@
 
 - [ ] Create the template for all jsps using bootstrap or materialize
 - [ ] Weekly journal entry
-- [ ] Add the role table
-- [ ] Add the role entity
-- [ ] Create the role dao
+- [X ] Add the role table - *WEEK 4*
+- [X ] Add the role entity - *WEEK 4*
+- [X ] Create the role dao
 - [ ] Create the role dao unit tests
 - [ ] Add a jsp to display user and role
 - [ ] Add jsp to add a user
