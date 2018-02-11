@@ -1,9 +1,10 @@
 package matc.madjava.persistence;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 
 /**
  * This file provides a SessionFactory for use with DAOS using Hibernate
@@ -15,15 +16,30 @@ public class SessionFactoryProvider {
 
     private static SessionFactory sessionFactory;
 
-    private static void createSessionFactory() {
+    /**
+     * private constructor prevents instantiating this class anywhere else
+     */
 
-        Configuration configuration = new Configuration();
-        configuration.configure();
-        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+    private SessionFactoryProvider() {
 
-        sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+    }
+    /**
+     * Create session factory.
+     */
+    public static void createSessionFactory() {
+
+        StandardServiceRegistry standardRegistry =
+                new StandardServiceRegistryBuilder().configure().build();
+        Metadata metaData =
+                new MetadataSources(standardRegistry).getMetadataBuilder().build();
+        sessionFactory = metaData.getSessionFactoryBuilder().build();
     }
 
+    /**
+     * Gets session factory.
+     *
+     * @return the session factory
+     */
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             createSessionFactory();

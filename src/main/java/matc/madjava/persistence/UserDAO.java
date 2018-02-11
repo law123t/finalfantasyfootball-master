@@ -1,133 +1,131 @@
 package matc.madjava.persistence;
 
 import matc.madjava.entity.User;
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.*;
 
-import java.util.ArrayList;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class UserDAO {
 
-    private final Logger log = Logger.getLogger(this.getClass());
+    private final Logger log = LogManager.getLogger(this.getClass());
+    SessionFactory sessionFactory = SessionFactoryProvider.getSessionFactory();
 
+    /**
+     * returns an array of all users
+     *
+     * @return users
+     */
     public List<User> getAllUsers() {
-        List<User> users = new ArrayList<User>();
-        Session session = null;
-        try {
-            session = SessionFactoryProvider.getSessionFactory().openSession();
-            users = session.createCriteria(User.class).list();
-        } catch (HibernateException he) {
-            log.error("Error getting all users", he);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
+        Session session = sessionFactory.openSession();
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<User> query = builder.createQuery( User.class );
+        Root<User> root = query.from( User.class );
+        List<User> users = session.createQuery( query ).getResultList();
+
+        log.debug("The list of users " + users);
+        session.close();
+
         return users;
     }
 
-    public User getUserByID(int userID) {
-        User user = null;
-        Session session = null;
-        try {
-            session = SessionFactoryProvider.getSessionFactory().openSession();
-            user = (User) session.get(User.class, userID);
-        } catch (HibernateException he) {
-            log.error("Error getting user with id: " + userID, he);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
+    /**
+     * gets user by user ID
+     *
+     * @param userId
+     * @return user
+     */
+    public User getUserByID(int userId) {
+        Session session = sessionFactory.openSession();
+        User user = session.get( User.class, userId );
+        session.close();
         return user;
     }
 
-    public List<User> getByUserName(String userName) {
-        List<User> users = new ArrayList<User>();
-        Session session = null;
-        try {
-            session = SessionFactoryProvider.getSessionFactory().openSession();
-            Criteria criteria = session.createCriteria(User.class);
-            criteria.add(Restrictions.eq("userName", userName));
-            users = criteria.list();
-        } catch (HibernateException he) {
-            log.error("Couldn't find username " + userName, he);
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-        return users;
-    }
-
+    /**
+     * updates user
+     *
+     * @param user
+     */
     public void updateUser(User user) {
-        Transaction transaction = null;
-        Session session = null;
-        try {
-            session = SessionFactoryProvider.getSessionFactory().openSession();
-            transaction = session.beginTransaction();
-            session.saveOrUpdate(user);
-            transaction.commit();
-        } catch (HibernateException he){
-            if (transaction != null) {
-                try {
-                    transaction.rollback();
-                } catch (HibernateException he2) {
-                    log.error("Error rolling back save of user: " + user, he2);
-                }
-            }
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
+        Session session = sessionFactory.openSession();
+        session.saveOrUpdate(user);
+        session.close();
     }
 
-    public void deleteUserByID(int id) {
-        Transaction transaction = null;
-        Session session = null;
-        User user = null;
-        try {
-
-            session = SessionFactoryProvider.getSessionFactory().openSession();
-            user = (User) session.get(User.class, id);
-            transaction = session.beginTransaction();
-            session.delete(user);
-            transaction.commit();
-        } catch (HibernateException he){
-            if (transaction != null) {
-                try {
-                    transaction.rollback();
-                } catch (HibernateException he2) {
-                    log.error("Error rolling back save of user: " + user, he2);
-                }
-            }
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
+    /**
+     * deletes user by ID
+     *
+     * @param user
+     */
+    public void deleteUserByID(User user) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        session.delete(user);
+        transaction.commit();
+        session.close();
     }
 
-    public User insertUser(User user) {
-        Session session = SessionFactoryProvider.getSessionFactory().openSession();
-        Transaction transaction = null;
-        try{
-            transaction = session.beginTransaction();
-            user = new User( user.getUserId(), user.getUserName(), user.getUserPass());
-            session.save(user);
-            transaction.commit();
-        }catch (HibernateException e) {
-            if (transaction!=null) transaction.rollback();
-            log.error("error adding user", e);
-        }finally {
-            session.close();
-        }
-        return user;
+    /**
+     * insert user dao method
+     *
+     * @param user
+     * @return id
+     */
+    public int insertUser(User user) {
+        int id = 0;
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        id = (Integer)session.save(user);
+        transaction.commit();
+        session.close();
+        return id;
+    }
+
+
+    /**
+     * Get user by property (exact match)
+     * sample usage: getByPropertyEqual("lastname", "Curry")
+     */
+    public List<User> getByPropertyEqual(String propertyName, String value) {
+        Session session = sessionFactory.openSession();
+
+        log.debug("Searching for user with " + propertyName + " = " + value);
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<User> query = builder.createQuery( User.class );
+        Root<User> root = query.from( User.class );
+        query.select(root).where(builder.equal(root.get(propertyName), value));
+        List<User> users = session.createQuery( query ).getResultList();
+
+        session.close();
+        return users;
+    }
+
+    /**
+     * Get user by property (like)
+     * sample usage: getByPropertyLike("lastname", "C")
+     */
+    public List<User> getByPropertyLike(String propertyName, String value) {
+        Session session = sessionFactory.openSession();
+
+        log.debug("Searching for user with {} = {}, " + propertyName + ", " + value);
+
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<User> query = builder.createQuery( User.class );
+        Root<User> root = query.from( User.class );
+        Expression<String> propertyPath = root.get(propertyName);
+
+        query.where(builder.like(propertyPath, "%" + value + "%"));
+
+        List<User> users = session.createQuery( query ).getResultList();
+        session.close();
+        return users;
     }
 }

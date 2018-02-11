@@ -17,6 +17,12 @@ public class User {
     private String userName;
     @Column(name = "user_pass")
     private String userPass;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
+    @Column(name = "email")
+    private String email;
 
 
     /**
@@ -36,7 +42,9 @@ public class User {
         this.userId = userId;
         this.userName = userName;
         this.userPass = userPass;
-
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
     }
 
     /**
@@ -94,12 +102,68 @@ public class User {
         this.userId = userId;
     }
 
+    /**
+     * Gets first name.
+     *
+     * @return the first name
+     */
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * Sets first name.
+     *
+     * @param firstName the first anme
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * Gets last name.
+     *
+     * @return the last name
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * Sets last name.
+     *
+     * @param lastName the last name
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
+     * Gets email
+     *
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Sets email.
+     *
+     * @param email the email
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @Override
     public String toString() {
         return "User{" +
                 "userName ='" + userName + '\'' +
                 ", userPass ='" + userPass + '\'' +
+                ", first name ='" + firstName + '\'' +
+                ", last name ='" + lastName  + '\'' +
+                ", email ='" + email + '\'' +
                 '}';
     }
 }
